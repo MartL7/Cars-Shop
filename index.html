@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Tienda de Carros 🚗 </title>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<style>
+  :root {
+    color-scheme: dark;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  body {
+    max-width: 100%;
+    position: relative;
+    margin: 0 auto;
+    background: 
+    linear-gradient(to right, #4f4f4f2e 1px, transparent 1px),
+    linear-gradient(to bottom, #4f4f4f2e 1px, transparent 1px);
+  background-size: 14px 24px;
+  }
+
+  button {
+    display: block;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+  }
+  button:hover {
+    border-color: #646cff;
+  }
+  button:focus,
+  button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+
+  .principal-container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+  }
+
+  .cart-shop {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    z-index: 1000;
+    overflow-y: auto;
+
+    aside {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    height: 400px;
+
+    h2 {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    span {
+      color: rgb(190, 65, 95);
+      text-align: center;
+    }
+
+    button {
+      width: 100px;
+    }
+  }
+
+  .products-image {
+    border-radius: 4px;
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: block;
+    object-fit: cover;
+    background: #fff;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 15px;
+    margin-bottom: 20px;
+
+    aside {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    aside img {
+      width: 80px;
+
+      @media (max-width: 768px){
+        display: none;
+      }
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    ul li a {
+      text-decoration: none;
+      color: #FFF;
+      font-weight: bold;
+      transition: all 0.25s;
+
+      &:hover {
+        color: #646cff;
+      }
+    }
+
+    ul li button {
+      position: relative;
+
+      span {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: #646cff;
+        color: #FFF;
+        border-radius: 50%;
+        padding: 5px;
+        font-size: 0.8em;
+      }
+    }
+  }
+
+  .filters-contain {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 15px;
+    margin-bottom: 20px;
+
+    @media (max-width: 400px) {
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    div {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>
+<body>
+
+  <header class="header">
+    <aside>
+      <img
+        decoding="async"
+        src="./img/logo.webp" 
+        alt="Logo de la Tienda"
+      />
+      <h1> CarShop </h1>
+    </aside>
+
+    <ul>
+      <li> <a href="#"> Inicio </a> </li>
+      <li> <a href="https://www.whatsapp.com/" target="_blank"> Contacto </a> </li>
+      <li> 
+        <button id="show-cart">
+          <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' strokeWidth='1' stroke='currentColor' fill='none' strokeLinecap='round' strokeLinejoin='round'>
+            <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+            <path d='M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0' />
+            <path d='M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0' />
+            <path d='M17 17h-11v-14h-2' />
+            <path d='M6 5l6 .429m7.138 6.573l-.143 1h-13' />
+            <path d='M15 6h6m-3 -3v6' />
+          </svg>
+
+          <span id="count-products">0</span>
+        </button> 
+      </li>
+    </ul>
+  </header>
+
+  <main class="principal-container">
+
+    <section class="cart-shop">
+
+    </section>
+
+    <article class="filters-contain">
+      <div>
+        <label for="price"> Precio </label>
+        <input type="range" id="price" min="0" max="1000000">
+        <span>
+          $ <span id="min-price">0</span>
+        </span>
+      </div>
+
+      <div>
+        <label for="category"> Categoría </label>
+        <select id="category">
+          <option value="all"> Todos </option>
+          <option value="ferrari"> Ferrari </option>
+          <option value="lamborghini"> Lamborghini </option>
+          <option value="porsche"> Porsche </option>
+          <option value="bmw"> BMW </option>
+        </select>
+    </article>
+
+    <section class="products">
+    </section>
+  </main>
+</body>
+</html>
+
+<script type="module">
+  // Credits: Code by -> Geovas --> https://geovas.vercel.app/
+  import { cars } from './Js/cars.js'
+  import { addToCartIcon } from './Js/icons.js'
+
+  let minPrice = 0
+  let countProducts = localStorage.getItem('countProducts') || 0
+  const $products = document.querySelector('.products')
+  const $minPrice = document.querySelector('#min-price')
+  const $inputPrice = document.querySelector('#price')
+  const $category = document.querySelector('#category')
+  const $showCart = document.querySelector('#show-cart')
+  const $countProducts = document.querySelector('#count-products')
+  const $secitonCart = document.querySelector('.cart-shop')
+
+  $countProducts.textContent = countProducts
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCars(cars)
+  })
+
+  function renderCars (cars) {
+    $products.innerHTML = ''
+
+    cars.forEach((car) => {
+      const  { id, name, price, image } = car
+
+      const $article = document.createElement('article')
+      $article.classList.add('product')
+      $article.innerHTML = `
+        <img 
+          decoding="async"
+          loading="lazy"
+          src="${image}" 
+          class="products-image"
+          alt="${name}"
+        />
+        <h2>${name}</h2>
+        <span>$ ${price}</span>
+        <button data-id="${id}" class="button-add-cart">
+          ${addToCartIcon()}
+        </button> 
+      `
+      $products.appendChild($article)
+    })
+
+    document.querySelectorAll('.button-add-cart').forEach(($button) => {
+      $button.addEventListener('click', () => {
+        const { id } = $button.dataset
+        Toastify({
+          text: "Producto Agregado al Carrito",
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "bottom",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: "linear-gradient(to right, #00b09b, #96c93d)",
+          },
+          onClick: function(){}
+        }).showToast();
+        addToCart(id)
+      })
+    })
+  }
+
+  $showCart.addEventListener('click', showCart)
+
+  function addToCart (id) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || []
+    cart.push(id)
+    localStorage.setItem('cart', JSON.stringify(cart))
+    countProducts++
+    $countProducts.textContent = countProducts
+    localStorage.setItem('countProducts', countProducts)
+  }
+
+  function showCart () {
+    $secitonCart.style.display = 'block'
+    const cart = JSON.parse(localStorage.getItem('cart')) || []
+    const productsInCart = cart.map(id => cars.find(car => car.id === id))
+
+    $secitonCart.innerHTML = `
+      <aside>
+        <button id="close-cart"> Cerrar </button>
+        <h2> Carrito de Compras </h2>
+      </aside>
+      <ul>
+        ${productsInCart.map(product => `
+          <li>
+            <img 
+              decoding="async"
+              loading="lazy"
+              src="${product.image}" 
+              alt="${product.name}"
+              class="products-image"
+            />
+            <h3>${product.name}</h3>
+          </li>
+        `).join('')}
+      </ul>
+    `
+
+    const $closeCart = document.querySelector('#close-cart')
+    $closeCart.addEventListener('click', () => {
+      $secitonCart.style.display = 'none'
+    })
+  }
+
+  $inputPrice.addEventListener('input', handleChangeMinPrice)
+
+  function handleChangeMinPrice (event) { 
+    const { value } = event.target
+    minPrice = Number(value)
+
+    $minPrice.textContent = `${minPrice}`
+    filtersMinPriceCars()
+  }
+
+  function filtersCategoryCars () {
+    const category = $category?.value
+
+    if (category === 'all') {
+      renderCars(cars)
+      return
+    }
+
+    const filterCars = cars.filter((car) => car?.category?.toLowerCase() === category)
+    renderCars(filterCars)
+  }
+
+  function filtersMinPriceCars () {
+    const filterCars = cars.filter((car) => car.price >= minPrice)
+    renderCars(filterCars)
+  }
+
+
+  $category.addEventListener('change', filtersCategoryCars)
+</script>
